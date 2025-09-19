@@ -15,10 +15,8 @@ function drawX(ctx, row, col, lineSpacing) {
   const y = row * lineSpacing;
   const padding = lineSpacing / 5;
   ctx.beginPath();
-  ctx.moveTo(x + padding, y + padding);
-  ctx.lineTo(x + lineSpacing - padding, y + lineSpacing - padding);
-  ctx.moveTo(x + lineSpacing - padding, y + padding);
-  ctx.lineTo(x + padding, y + lineSpacing - padding);
+  ctx.moveTo(x + padding + 50, y + padding + 50);
+  ctx.lineTo(x + 70 , y + 10);
   ctx.stroke();
 }
 
@@ -33,6 +31,21 @@ function drawO(ctx, row, col, lineSpacing) {
   ctx.arc(centerX, centerY, radius, 0, 2 * Math.PI);
   ctx.stroke();
 }
+
+function CheckValidNumberInput(){
+ if (n = [col],[row])
+  print("no")
+ else print ("yes")
+
+
+
+
+
+}
+CheckValidNumberInput()
+
+
+
 
 function calculateWinner(board, gridSize) {
   // Check rows
@@ -59,32 +72,10 @@ function calculateWinner(board, gridSize) {
   }
 
   // Check diagonal (top-left to bottom-right)
-  if (board[0][0]) {
-    let isWin = true;
-    for (let i = 1; i < gridSize; i++) {
-      if (board[i][i] !== board[0][0]) {
-        isWin = false;
-        break;
-      }
-    }
-    if (isWin) {
-      return board[0][0];
-    }
-  }
+
 
   // Check diagonal (top-right to bottom-left)
-  if (board[0][gridSize - 1]) {
-    let isWin = true;
-    for (let i = 1; i < gridSize; i++) {
-      if (board[i][gridSize - 1 - i] !== board[0][gridSize - 1]) {
-        isWin = false;
-        break;
-      }
-    }
-    if (isWin) {
-      return board[0][gridSize - 1];
-    }
-  }
+
 
   return null;
 }
@@ -92,7 +83,7 @@ function calculateWinner(board, gridSize) {
 function GameBoard() {
   const canvasRef = useRef(null);
   // gridSize is now a state variable, starting at 3.
-  const [gridSize, setGridSize] = useState(3);
+  const [gridSize, setGridSize] = useState(5);
   // canvasSize is also state, so it can be updated.
   const [canvasSize, setCanvasSize] = useState(gridSize * 100);
 
@@ -185,11 +176,8 @@ function GameBoard() {
 
   return (
     <>
-      <h1>Tic Tac Toe</h1>
+      <h2>Number game but i forgot how to do cell  or how type in number so now im stuck</h2>
       <div style={{ margin: '10px 0' }}>
-        <button onClick={() => setGridSize(3)} style={{ marginRight: '5px' }}>3x3</button>
-        <button onClick={() => setGridSize(4)} style={{ marginRight: '5px' }}>4x4</button>
-        <button onClick={() => setGridSize(5)}>5x5</button>
       </div>
       <h2>{status}</h2>
       <canvas

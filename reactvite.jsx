@@ -32,20 +32,22 @@ function drawO(ctx, row, col, lineSpacing) {
   ctx.stroke();
 }
 
-function CheckValidNumberInput(){
- if (n = [col],[row])
-  print("no")
- else print ("yes")
-
-
-
-
-
+// NEW: draw number instead of X/O
+function drawNumber(ctx, row, col, lineSpacing, value) {
+  const x = col * lineSpacing + lineSpacing / 2;
+  const y = row * lineSpacing + lineSpacing / 2;
+  ctx.fillStyle = 'black';
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'middle';
+  ctx.font = Math.floor(lineSpacing * 0.5) + 'px Arial';
+  ctx.fillText(String(value), x, y);
 }
-CheckValidNumberInput()
 
+function isValidPlacement(board, gridSize, col, row, num){
+  if (num < 1 || num > gridSize) return false;
+}
 
-
+isValidPlacement();
 
 function calculateWinner(board, gridSize) {
   // Check rows
@@ -82,9 +84,7 @@ function calculateWinner(board, gridSize) {
 
 function GameBoard() {
   const canvasRef = useRef(null);
-  // gridSize is now a state variable, starting at 3.
   const [gridSize, setGridSize] = useState(5);
-  // canvasSize is also state, so it can be updated.
   const [canvasSize, setCanvasSize] = useState(gridSize * 100);
 
   const [turn, setTurn] = useState(1);
@@ -93,8 +93,6 @@ function GameBoard() {
   );
   const [winner, setWinner] = useState(null);
 
-  // This new effect runs ONLY when gridSize changes.
-  // It resets the entire game to match the new size.
   useEffect(() => {
     setCanvasSize(gridSize * 100);
     setTurn(1);
@@ -102,8 +100,6 @@ function GameBoard() {
     setWinner(null);
   }, [gridSize]);
 
-  // This effect handles all the drawing, as before.
-  // It runs whenever the board state changes.
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
@@ -124,10 +120,8 @@ function GameBoard() {
 
     board.forEach((row, rowIndex) => {
       row.forEach((cell, colIndex) => {
-        if (cell === 'X') {
-          drawX(ctx, rowIndex, colIndex, lineSpacing);
-        } else if (cell === 'O') {
-          drawO(ctx, rowIndex, colIndex, lineSpacing);
+        if (cell !== null && cell !== undefined && cell !== '') {
+          drawNumber(ctx, rowIndex, colIndex, lineSpacing, cell);
         }
       });
     });
@@ -146,9 +140,16 @@ function GameBoard() {
 
     if (board[row][col]) return;
 
-    const currentPlayerSymbol = turn % 2 === 1 ? 'X' : 'O';
+    // NEW: prompt user for a number and place it into the cell
+    const input = window.prompt('Enter a number');
+    if (input === null) return; // cancel
+    const value = input.trim();
+    if (value === '') return;
+    const num = parseInt(value, 10);
+    if (isNaN(num)) return;
+
     const newBoard = board.map(arr => [...arr]);
-    newBoard[row][col] = currentPlayerSymbol;
+    newBoard[row][col] = num;
     setBoard(newBoard);
 
     const newWinner = calculateWinner(newBoard, gridSize);

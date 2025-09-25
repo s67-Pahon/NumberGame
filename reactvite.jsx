@@ -24,7 +24,7 @@ function contain(array, num) {
   var i = 0;
   while (i < array.length) {
     if (array[i] == num) {
-
+      window.alert("can't input duplicate number in current row");
       return i;
     }
     i = i + 1;
@@ -37,6 +37,7 @@ function containColumn(board, col, num) {
   var r = 0;
   while (r < board.length) {
     if (board[r][col] == num) {
+      window.alert("can't input duplicate number in current column");
       return r; // row index where duplicate is found
     }
     r = r + 1;
@@ -205,6 +206,4 @@ function GameBoard() {
 }
 
 export default App;
-
-
 

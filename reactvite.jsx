@@ -24,13 +24,26 @@ function contain(array, num) {
   var i = 0;
   while (i < array.length) {
     if (array[i] == num) {
-      console.log("same number found in this row at column " + i);
+
       return i;
     }
     i = i + 1;
   }
   return -1;
 }
+
+// ADD: check for duplicate number in the same column (no console logs)
+function containColumn(board, col, num) {
+  var r = 0;
+  while (r < board.length) {
+    if (board[r][col] == num) {
+      return r; // row index where duplicate is found
+    }
+    r = r + 1;
+  }
+  return -1;
+}
+
 
 function calculateWinner(board, gridSize) {
   // Check rows
@@ -129,14 +142,17 @@ function GameBoard() {
     const value = input.trim();
     if (value === '') return;
     const num = parseInt(value, 10);
-if (isNaN(num)) return;
+    if (isNaN(num)) return;
 
-// ADD: block duplicates in the same row
-if (contain(board[row], num) !== -1) {
-  console.log("duplicate number on this row; choose another number or cell");
-  return;
+    // ADD: block duplicates in the same row
+    if (contain(board[row], num) !== -1) {
+    return;
+    
 }
-
+    // ADD: column check
+    if (containColumn(board, col, num) !== -1) {
+    return;
+}
      
 
     const newBoard = board.map(arr => [...arr]);
@@ -189,5 +205,6 @@ if (contain(board[row], num) !== -1) {
 }
 
 export default App;
+
 
 

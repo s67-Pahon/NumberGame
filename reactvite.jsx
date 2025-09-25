@@ -8,30 +8,6 @@ function App() {
   );
 }
 
-function drawX(ctx, row, col, lineSpacing) {
-  ctx.strokeStyle = 'black';
-  ctx.lineWidth = 5;
-  const x = col * lineSpacing;
-  const y = row * lineSpacing;
-  const padding = lineSpacing / 5;
-  ctx.beginPath();
-  ctx.moveTo(x + padding + 50, y + padding + 50);
-  ctx.lineTo(x + 70 , y + 10);
-  ctx.stroke();
-}
-
-function drawO(ctx, row, col, lineSpacing) {
-  ctx.strokeStyle = 'black';
-  ctx.lineWidth = 5;
-  const centerX = col * lineSpacing + lineSpacing / 2;
-  const centerY = row * lineSpacing + lineSpacing / 2;
-  const padding = lineSpacing / 5;
-  const radius = lineSpacing / 2 - padding;
-  ctx.beginPath();
-  ctx.arc(centerX, centerY, radius, 0, 2 * Math.PI);
-  ctx.stroke();
-}
-
 // NEW: draw number instead of X/O
 function drawNumber(ctx, row, col, lineSpacing, value) {
   const x = col * lineSpacing + lineSpacing / 2;
@@ -43,11 +19,18 @@ function drawNumber(ctx, row, col, lineSpacing, value) {
   ctx.fillText(String(value), x, y);
 }
 
-function isValidPlacement(board, gridSize, col, row, num){
-  if (num < 1 || num > gridSize) return false;
+// ADD: simple linear scan (no built-ins)
+function contain(array, num) {
+  var i = 0;
+  while (i < array.length) {
+    if (array[i] == num) {
+      console.log("same number found in this row at column " + i);
+      return i;
+    }
+    i = i + 1;
+  }
+  return -1;
 }
-
-isValidPlacement();
 
 function calculateWinner(board, gridSize) {
   // Check rows
@@ -146,7 +129,15 @@ function GameBoard() {
     const value = input.trim();
     if (value === '') return;
     const num = parseInt(value, 10);
-    if (isNaN(num)) return;
+if (isNaN(num)) return;
+
+// ADD: block duplicates in the same row
+if (contain(board[row], num) !== -1) {
+  console.log("duplicate number on this row; choose another number or cell");
+  return;
+}
+
+     
 
     const newBoard = board.map(arr => [...arr]);
     newBoard[row][col] = num;
@@ -177,7 +168,7 @@ function GameBoard() {
 
   return (
     <>
-      <h2>Number game but i forgot how to do cell  or how type in number so now im stuck</h2>
+      <h2>Number game</h2>
       <div style={{ margin: '10px 0' }}>
       </div>
       <h2>{status}</h2>
@@ -198,3 +189,5 @@ function GameBoard() {
 }
 
 export default App;
+
+
